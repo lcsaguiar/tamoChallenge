@@ -1,0 +1,2 @@
+CREATE DATABASE calendar;
+CREATE DATABASE calendartest;

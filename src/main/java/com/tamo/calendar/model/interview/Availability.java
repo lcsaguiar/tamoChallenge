@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 public class Availability {
+    @Transient
     private final String format = "uuuu-MM-dd'T'HH:mm";
 
     @Id
