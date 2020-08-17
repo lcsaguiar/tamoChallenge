@@ -2,8 +2,11 @@ package com.tamo.calendar.model.interview;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tamo.calendar.model.client.Client;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,10 +14,16 @@ import java.util.Objects;
 public class Availability {
     @Id
     @GeneratedValue
+    @ApiModelProperty(hidden = true)
     private Long id;
 
+    @ApiModelProperty(required = true)
+    @NotNull
     @FutureOrPresent
     private LocalDateTime start_duration;
+
+    @ApiModelProperty(required = true)
+    @NotNull
     @FutureOrPresent
     private LocalDateTime end_duration;
 

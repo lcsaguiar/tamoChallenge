@@ -3,31 +3,43 @@ package com.tamo.calendar.model.client;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tamo.calendar.model.interview.Availability;
 import com.tamo.calendar.model.interview.Duration;
+import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="client_type")
 public class Client {
+
+    @ApiModelProperty(hidden = true)
     @Id
     @GeneratedValue
     private Long id;
 
+    @ApiModelProperty(example = "test", required = true)
+    @NotNull(message = "Must specify a name")
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @NotNull(message= "Must specify an email")
+    @ApiModelProperty(example = "test@test.com", required = true)
+    @NotNull(message = "Must specify an email")
     @Email(message = "Email must be valid")
     private String email;
+
+    @ApiModelProperty(hidden = true)
+    @OneToMany(mappedBy="client", fetch = FetchType.EAGER)
+    @Null
+    private List<Availability> availabilities;
+
     public Client() {
     }
     public Client(@NotEmpty(message = "Name cannot be empty") String name, @NotNull(message = "Must specify an email") @Email(message = "Email must be valid") String email) {
@@ -45,9 +57,6 @@ public class Client {
     public void setAvailabilities(List<Availability> availabilities) {
         this.availabilities = availabilities;
     }
-
-    @OneToMany(mappedBy="client", fetch = FetchType.EAGER)
-    private List<Availability> availabilities;
 
     public Long getId() {
         return id;

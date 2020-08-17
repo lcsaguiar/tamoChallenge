@@ -4,6 +4,8 @@ import com.tamo.calendar.dao.AvailabilityDao;
 import com.tamo.calendar.dao.ClientDao;
 import com.tamo.calendar.exceptions.DateNotValidException;
 import com.tamo.calendar.model.interview.Availability;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/availabilities/clients")
+@Api(tags = "Availability Controller")
 public class AvailabilityController {
    @Autowired
     private AvailabilityDao dao;
@@ -20,6 +23,7 @@ public class AvailabilityController {
     @Autowired
     private ClientDao clientDao;
 
+    @ApiOperation(value = "Get all availabilities")
     @GetMapping()
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Returns all clients availabilities")
@@ -28,6 +32,7 @@ public class AvailabilityController {
         return dao.getAvailabilityList();
     }
 
+    @ApiOperation(value = "Create an availability")
     @PostMapping("/{clientId}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Post availability in db successfully"),
