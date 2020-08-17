@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +18,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class AvailabilityDaoTestIntegration {
+@Transactional
+public class AvailabilityDaoIntegrationTest {
 
     @Autowired
     private AvailabilityDao availabilityDao;
@@ -29,7 +31,7 @@ public class AvailabilityDaoTestIntegration {
     public void saveAvailabilityAndGetList() throws Exception {
         Interviewer interviewer = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewer);
-        Availability availability = new Availability(LocalDateTime.now(), LocalDateTime.now(), interviewer);
+        Availability availability = new Availability(LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), interviewer);
         availabilityDao.saveAvailability(availability);
 
         List<Availability> availabilities = availabilityDao.getAvailabilityList();

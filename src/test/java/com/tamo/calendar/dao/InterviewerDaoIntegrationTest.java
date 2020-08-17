@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +17,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class InterviewerDaoTestIntegration {
+@Transactional
+public class InterviewerDaoIntegrationTest {
     @Autowired
     private InterviewerDao interviewerDao;
 

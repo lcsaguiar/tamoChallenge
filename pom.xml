@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>11</java.version>
+        <myTestSourceDirectory>${project.basedir}/src/test/java</myTestSourceDirectory>
+        <packaging>jar</packaging>
     </properties>
 
     <dependencies>
@@ -93,12 +95,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
