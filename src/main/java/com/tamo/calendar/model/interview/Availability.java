@@ -1,6 +1,7 @@
 package com.tamo.calendar.model.interview;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tamo.calendar.model.client.Client;
 import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
@@ -11,19 +12,23 @@ import java.util.Objects;
 
 @Entity
 public class Availability {
+    private final String format = "uuuu-MM-dd'T'HH:mm";
+
     @Id
     @GeneratedValue
     @ApiModelProperty(hidden = true)
     private Long id;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, example = "2021-12-31T00:00")
     @NotNull
     @FutureOrPresent
+    @JsonFormat(pattern = format)
     private LocalDateTime start_duration;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, example = "2021-12-31T10:00")
     @NotNull
     @FutureOrPresent
+    @JsonFormat(pattern = format)
     private LocalDateTime end_duration;
 
     @ManyToOne
@@ -75,6 +80,11 @@ public class Availability {
                 Objects.equals(start_duration, that.start_duration) &&
                 Objects.equals(end_duration, that.end_duration) &&
                 Objects.equals(client, that.client);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, start_duration, end_duration, client);
     }
 
     @JsonBackReference

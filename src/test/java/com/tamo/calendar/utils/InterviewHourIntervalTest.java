@@ -1,13 +1,14 @@
 package com.tamo.calendar.utils;
 
 import com.tamo.calendar.model.interview.Duration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class InterviewHourIntervalTest {
     private List<Duration> list1;
@@ -21,49 +22,91 @@ public class InterviewHourIntervalTest {
 
     @Test
     public void overlapDurationWithOneInterview() {
-        list1 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T09:00:00"))));
-        list2 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T09:00:00"))));
+        LocalDateTime start = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end = start.plusHours(1);
+        list1 = new LinkedList<>(List.of(new Duration(start, end)));
+        list2 = new LinkedList<>(List.of(new Duration(start, end)));
 
         List<Duration> interviews = interviewHourInterval.calculateInterviews(list1, list2);
         List<Duration> expected = new LinkedList<>(List.of(
-                new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T09:00:00"))));
+                new Duration(start, end)));
 
-        Assert.assertEquals("The array length is not what was expected!", 1, interviews.size());
-        Assert.assertEquals("The result is not the expected", interviews.get(0), expected.get(0));
+        assertEquals("The array length is not what was expected!", 1, interviews.size());
+        assertEquals("The result is not the expected", expected.get(0), interviews.get(0));
     }
 
     @Test
     public void overlapDurationWithMultipleInterviews() {
-        list1 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T10:00:00"))));
-        list2 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T10:00:00"))));
+        LocalDateTime start = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end = start.plusHours(2);
+        list1 = new LinkedList<>(List.of(new Duration(start, end)));
+        list2 = new LinkedList<>(List.of(new Duration(start, end)));
 
         List<Duration> interviews =  interviewHourInterval.calculateInterviews(list1, list2);
         List<Duration> expected = new LinkedList<>(List.of(
-                new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T09:00:00")),
-                new Duration(LocalDateTime.parse("2020-09-16T09:00:00"), LocalDateTime.parse("2020-09-16T10:00:00"))));
+                new Duration(start, start.plusHours(1)),
+                new Duration(start.plusHours(1), end)));
 
-        Assert.assertEquals("The array length is not what was expected!", 2, interviews.size());
-        Assert.assertEquals("The result is not the expected", interviews.get(0), expected.get(0));
-        Assert.assertEquals("The result is not the expected", interviews.get(1), expected.get(1));
+        assertEquals("The array length is not what was expected!", 2, interviews.size());
+        assertEquals("The result is not the expected", expected.get(0), interviews.get(0));
+        assertEquals("The result is not the expected", expected.get(1), interviews.get(1));
     }
 
     @Test
     public void noOverlapDuration() {
-        list1 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T07:00:00"), LocalDateTime.parse("2020-09-16T08:00:00"))));
-        list2 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T09:00:00"))));
+        LocalDateTime start1 = LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end1 = LocalDateTime.now().plusHours(2).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start2 = LocalDateTime.now().plusHours(2).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end2 = LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.MINUTES);
+        list1 = new LinkedList<>(List.of(new Duration(start1, end1)));
+        list2 = new LinkedList<>(List.of(new Duration(start2, end2)));
 
         List<Duration> interviews = interviewHourInterval.calculateInterviews(list1, list2);
 
-        Assert.assertEquals("The array length is not what was expected!", 0, interviews.size());
+        assertEquals("The array length is not what was expected!", 0, interviews.size());
     }
 
     @Test
     public void overlapDurationWithLessThanAnHour() {
-        list1 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T07:00:00"), LocalDateTime.parse("2020-09-16T08:59:00"))));
-        list2 = new LinkedList<>(List.of(new Duration(LocalDateTime.parse("2020-09-16T08:00:00"), LocalDateTime.parse("2020-09-16T09:00:00"))));
+        LocalDateTime start1 = LocalDateTime.now().plusMinutes(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end1 = LocalDateTime.now().plusMinutes(121).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start2 = LocalDateTime.now().plusMinutes(62).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end2 = LocalDateTime.now().plusMinutes(122).truncatedTo(ChronoUnit.MINUTES);
+        list1 = new LinkedList<>(List.of(new Duration(start1, end1)));
+        list2 = new LinkedList<>(List.of(new Duration(start2, end2)));
 
         List<Duration> interviews = interviewHourInterval.calculateInterviews(list1, list2);
 
-        Assert.assertEquals("The array length is not what was expected!", 0, interviews.size());
+        assertEquals("The array length is not what was expected!", 0, interviews.size());
+    }
+
+    @Test
+    public void overlapDurationWithOldDates() {
+        LocalDateTime start = LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end = start.plusHours(1);
+        list1 = new LinkedList<>(List.of(new Duration(start, end)));
+        list2 = new LinkedList<>(List.of(new Duration(start, end)));
+
+        List<Duration> interviews = interviewHourInterval.calculateInterviews(list1, list2);
+
+        assertEquals("The array length is not what was expected!", 0, interviews.size());
+    }
+
+    @Test
+    public void overlapDurationWithSomePartOldThanNow() {
+        LocalDateTime start = LocalDateTime.now().minusHours(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end = start.plusHours(3);
+        list1 = new LinkedList<>(List.of(new Duration(start, end)));
+        list2 = new LinkedList<>(List.of(new Duration(start, end)));
+
+        List<Duration> interviews = interviewHourInterval.calculateInterviews(list1, list2);
+
+        List<Duration> expected = new LinkedList<>(List.of(
+                new Duration(start.plusHours(1), start.plusHours(2)),
+                new Duration(start.plusHours(2), end)));
+
+        assertEquals("The array length is not what was expected!", 2, interviews.size());
+        assertEquals("The result is not the expected",expected.get(0), interviews.get(0));
+        assertEquals("The result is not the expected", expected.get(1), interviews.get(1));
     }
 }

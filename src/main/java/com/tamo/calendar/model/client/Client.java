@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tamo.calendar.model.interview.Availability;
 import com.tamo.calendar.model.interview.Duration;
 import io.swagger.annotations.ApiModelProperty;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -67,13 +65,10 @@ public class Client {
         return availabilities;
     }
 
-    //FIXME the logic should not be here
     public List<Duration> returnDatesList() {
         List<Duration> datesList = new LinkedList<>();
         for(Availability a: availabilities) {
-            if(!a.getStart_duration().isBefore(LocalDateTime.now())) {
-                datesList.add(new Duration(a.getStart_duration(), a.getEnd_duration()));
-            }
+            datesList.add(new Duration(a.getStart_duration(), a.getEnd_duration()));
         }
         return datesList;
     }
@@ -101,5 +96,10 @@ public class Client {
         return Objects.equals(id, client.id) &&
                 Objects.equals(name, client.name) &&
                 Objects.equals(email, client.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email);
     }
 }

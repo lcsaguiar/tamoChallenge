@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -42,7 +43,10 @@ public class AvailabilityControllerTest {
 
     @Test
     public void getAvailabilitiesList() throws Exception {
-        Availability availability = new Availability(LocalDateTime.now(),LocalDateTime.now(), new Client());
+        Availability availability = new Availability(
+                LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+                new Client());
 
         List<Availability> availabilities = List.of(availability);
         given(availabilityDao.getAvailabilityList()).willReturn(availabilities);
@@ -59,7 +63,7 @@ public class AvailabilityControllerTest {
 
     @Test
     public void saveAvailability() throws Exception {
-        String dateString = "2020-09-16T08:00:00";
+        String dateString = "2020-09-16T08:00";
         JSONObject jsonRequest = new JSONObject();
         jsonRequest.put("start_duration", dateString);
         jsonRequest.put("end_duration", dateString);

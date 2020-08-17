@@ -38,19 +38,4 @@ public class ClientTest {
         assertEquals("The result is not the expected", datesList.get(0), expected.get(0));
 
     }
-
-    @Test
-    public void returnDatesListWithDatesBeforeNow() {
-        Availability availability = new Availability();
-        LocalDateTime start = LocalDateTime.now().minusHours(1);
-        LocalDateTime end = LocalDateTime.now().minusHours(1);
-        availability.setStart_duration(start);
-        availability.setEnd_duration(end);
-        client.setAvailabilities(List.of(availability));
-
-        List<Duration> datesList =  client.returnDatesList();
-
-        assertEquals("The array length is not what was expected!", 0, datesList.size());
-
-    }
 }
