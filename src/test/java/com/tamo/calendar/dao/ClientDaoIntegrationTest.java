@@ -25,7 +25,7 @@ public class ClientDaoIntegrationTest {
     private InterviewerDao interviewerDao;
 
     @Test
-    public void saveClientAndGetById() throws Exception {
+    public void saveClientAndGetById() {
         Interviewer interviewerTest = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewerTest);
 

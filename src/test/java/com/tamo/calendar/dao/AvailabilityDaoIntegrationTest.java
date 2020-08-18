@@ -28,7 +28,7 @@ public class AvailabilityDaoIntegrationTest {
     private InterviewerDao interviewerDao;
 
     @Test
-    public void saveAvailabilityAndGetList() throws Exception {
+    public void saveAvailabilityAndGetList() {
         Interviewer interviewer = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewer);
         Availability availability = new Availability(LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), interviewer);

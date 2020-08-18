@@ -1,5 +1,8 @@
 package com.tamo.calendar.dao;
 
+import com.tamo.calendar.exceptions.CandidateNotFoundException;
+import com.tamo.calendar.exceptions.InterviewerNotFoundException;
+import com.tamo.calendar.model.client.Candidate;
 import com.tamo.calendar.model.client.Interviewer;
 import com.tamo.calendar.model.client.Interviewer;
 import org.junit.Test;
@@ -23,7 +26,7 @@ public class InterviewerDaoIntegrationTest {
     private InterviewerDao interviewerDao;
 
     @Test
-    public void saveInterviewerAndGetList() throws Exception {
+    public void saveInterviewerAndGetList() {
         Interviewer interviewer = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewer);
 
@@ -34,12 +37,20 @@ public class InterviewerDaoIntegrationTest {
     }
 
     @Test
-    public void saveInterviewerAndGetById() throws Exception {
+    public void saveInterviewerAndGetById() {
         Interviewer interviewer = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewer);
 
         Interviewer actual = interviewerDao.getInterviewerById(interviewer.getId().toString());
 
         assertEquals("The interviewer is not the expected", interviewer, actual);
+    }
+
+    @Test(expected = InterviewerNotFoundException.class)
+    public void saveCandidateAndGetByDifferentId() {
+        Interviewer interviewer = new Interviewer("test", "test@test.com");
+        interviewerDao.saveInterviewer(interviewer);
+        Long wrongId = interviewer.getId() + 1L;
+        interviewerDao.getInterviewerById(wrongId.toString());
     }
 }

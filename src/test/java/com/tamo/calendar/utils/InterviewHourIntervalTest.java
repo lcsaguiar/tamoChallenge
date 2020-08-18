@@ -22,7 +22,7 @@ public class InterviewHourIntervalTest {
 
     @Test
     public void overlapDurationWithOneInterview() {
-        LocalDateTime start = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.HOURS);
         LocalDateTime end = start.plusHours(1);
         list1 = new LinkedList<>(List.of(new Duration(start, end)));
         list2 = new LinkedList<>(List.of(new Duration(start, end)));
@@ -37,7 +37,7 @@ public class InterviewHourIntervalTest {
 
     @Test
     public void overlapDurationWithMultipleInterviews() {
-        LocalDateTime start = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.HOURS);
         LocalDateTime end = start.plusHours(2);
         list1 = new LinkedList<>(List.of(new Duration(start, end)));
         list2 = new LinkedList<>(List.of(new Duration(start, end)));
@@ -54,24 +54,10 @@ public class InterviewHourIntervalTest {
 
     @Test
     public void noOverlapDuration() {
-        LocalDateTime start1 = LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime end1 = LocalDateTime.now().plusHours(2).truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime start2 = LocalDateTime.now().plusHours(2).truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime end2 = LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.MINUTES);
-        list1 = new LinkedList<>(List.of(new Duration(start1, end1)));
-        list2 = new LinkedList<>(List.of(new Duration(start2, end2)));
-
-        List<Duration> interviews = interviewHourInterval.calculateInterviews(list1, list2);
-
-        assertEquals("The array length is not what was expected!", 0, interviews.size());
-    }
-
-    @Test
-    public void overlapDurationWithLessThanAnHour() {
-        LocalDateTime start1 = LocalDateTime.now().plusMinutes(1).truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime end1 = LocalDateTime.now().plusMinutes(121).truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime start2 = LocalDateTime.now().plusMinutes(62).truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime end2 = LocalDateTime.now().plusMinutes(122).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start1 = LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime end1 = LocalDateTime.now().plusHours(2).truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime start2 = LocalDateTime.now().plusHours(2).truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime end2 = LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.HOURS);
         list1 = new LinkedList<>(List.of(new Duration(start1, end1)));
         list2 = new LinkedList<>(List.of(new Duration(start2, end2)));
 
@@ -82,7 +68,7 @@ public class InterviewHourIntervalTest {
 
     @Test
     public void overlapDurationWithOldDates() {
-        LocalDateTime start = LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start = LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.HOURS);
         LocalDateTime end = start.plusHours(1);
         list1 = new LinkedList<>(List.of(new Duration(start, end)));
         list2 = new LinkedList<>(List.of(new Duration(start, end)));
@@ -94,7 +80,7 @@ public class InterviewHourIntervalTest {
 
     @Test
     public void overlapDurationWithSomePartOldThanNow() {
-        LocalDateTime start = LocalDateTime.now().minusHours(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime start = LocalDateTime.now().minusHours(1).truncatedTo(ChronoUnit.HOURS);
         LocalDateTime end = start.plusHours(3);
         list1 = new LinkedList<>(List.of(new Duration(start, end)));
         list2 = new LinkedList<>(List.of(new Duration(start, end)));

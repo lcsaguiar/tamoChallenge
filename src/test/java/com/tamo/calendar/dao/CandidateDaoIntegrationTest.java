@@ -1,5 +1,6 @@
 package com.tamo.calendar.dao;
 
+import com.tamo.calendar.exceptions.CandidateNotFoundException;
 import com.tamo.calendar.model.client.Candidate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +24,7 @@ public class CandidateDaoIntegrationTest {
     private CandidateDao candidateDao;
 
     @Test
-    public void saveCandidateAndGetList() throws Exception {
+    public void saveCandidateAndGetList() {
         Candidate candidate = new Candidate("test", "test@test.com");
         candidateDao.saveCandidate(candidate);
 
@@ -33,12 +35,20 @@ public class CandidateDaoIntegrationTest {
     }
 
     @Test
-    public void saveCandidateAndGetById() throws Exception {
+    public void saveCandidateAndGetById() {
         Candidate candidate = new Candidate("test", "test@test.com");
         candidateDao.saveCandidate(candidate);
 
         Candidate actual = candidateDao.getCandidateById(candidate.getId().toString());
 
         assertEquals("The candidate is not the expected",  candidate, actual);
+    }
+
+    @Test(expected = CandidateNotFoundException.class)
+    public void saveCandidateAndGetByDifferentId() {
+        Candidate candidate = new Candidate("test", "test@test.com");
+        candidateDao.saveCandidate(candidate);
+        Long wrongId = candidate.getId() + 1L;
+        candidateDao.getCandidateById(wrongId.toString());
     }
 }
