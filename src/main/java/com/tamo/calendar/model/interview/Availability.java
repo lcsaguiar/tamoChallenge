@@ -13,20 +13,20 @@ import java.util.Objects;
 @Entity
 public class Availability {
     @Transient
-    private final String format = "uuuu-MM-dd'T'HH:mm";
+    private final String format = "uuuu-MM-dd'T'HH";
 
     @Id
     @GeneratedValue
     @ApiModelProperty(hidden = true)
     private Long id;
 
-    @ApiModelProperty(required = true, example = "2021-12-31T00:00")
+    @ApiModelProperty(required = true, example = "2021-12-31T01")
     @NotNull
     @FutureOrPresent
     @JsonFormat(pattern = format)
     private LocalDateTime start_duration;
 
-    @ApiModelProperty(required = true, example = "2021-12-31T10:00")
+    @ApiModelProperty(required = true, example = "2021-12-31T10")
     @NotNull
     @FutureOrPresent
     @JsonFormat(pattern = format)

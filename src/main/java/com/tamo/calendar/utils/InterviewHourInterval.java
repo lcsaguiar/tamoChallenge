@@ -33,7 +33,7 @@ public class InterviewHourInterval implements InterviewInterval {
                             duration2.getStart();
 
                     // start duration must be after than now
-                    LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+                    LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
                     start = start.isBefore(now) ? now : start;
 
                     LocalDateTime end = duration1.getEnd().isBefore(duration2.getEnd()) ?
