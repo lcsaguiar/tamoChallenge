@@ -4,7 +4,8 @@ services:
     image: maven
     working_dir: /usr/src/app
     volumes:
-    - ./:/usr/src/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD:/usr/src/app
     entrypoint: ["mvn", "exec:java"]
     ports:
       - "8080:8080"
@@ -12,15 +13,15 @@ services:
       - postgres
     networks:
       - postgres-compose-network
+
   postgres:
     image: postgres
     ports:
       - "5432:5432"
-    volumes:
-      - ./postgresDocker/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=calendar
     networks:
       - postgres-compose-network
 
