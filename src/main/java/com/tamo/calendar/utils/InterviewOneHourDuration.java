@@ -32,9 +32,9 @@ public class InterviewOneHourDuration implements InterviewDuration {
 
     private List<Interview> calculateInterviewsAux(List<Interview> user1, List<Interview> user2) {
         List<Interview> interviews = new LinkedList<>();
-        for(Interview interview1 : user1) {
-            for(Interview interview2 : user2) {
-                if(overlapDates(
+        for (Interview interview1 : user1) {
+            for (Interview interview2 : user2) {
+                if (overlapDates(
                         interview1.getStart(),
                         interview1.getEnd(),
                         interview2.getStart(),
@@ -64,7 +64,7 @@ public class InterviewOneHourDuration implements InterviewDuration {
 
     private void addInterviews(List<Interview> interviews, LocalDateTime start, LocalDateTime end) {
         LocalDateTime endInterval = start.plusHours(HOURS);
-        while(!endInterval.isAfter(end)) {
+        while (!endInterval.isAfter(end)) {
             interviews.add(new Interview(start, endInterval));
             start = endInterval;
             endInterval = endInterval.plusHours(1);
@@ -72,10 +72,10 @@ public class InterviewOneHourDuration implements InterviewDuration {
     }
 
     private Interview getInterviewSlot(Interview interview) {
-        if (interview.getStart().getMinute() > 0 ) {
+        if (interview.getStart().getMinute() > 0) {
             interview.setStart(interview.getStart().plusHours(1).truncatedTo(ChronoUnit.HOURS));
         }
-        if(interview.getEnd().getMinute() > 0) {
+        if (interview.getEnd().getMinute() > 0) {
             interview.setEnd(interview.getEnd().minusHours(1).truncatedTo(ChronoUnit.HOURS));
         }
 
