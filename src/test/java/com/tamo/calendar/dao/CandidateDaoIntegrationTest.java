@@ -1,7 +1,7 @@
 package com.tamo.calendar.dao;
 
 import com.tamo.calendar.exceptions.CandidateNotFoundException;
-import com.tamo.calendar.model.client.Candidate;
+import com.tamo.calendar.model.user.Candidate;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -54,6 +53,7 @@ public class CandidateDaoIntegrationTest {
         Candidate candidate = new Candidate("test", "test@test.com");
         candidateDao.saveCandidate(candidate);
         Long wrongId = candidate.getId() + 1L;
+
         candidateDao.getCandidateById(wrongId.toString());
     }
 }

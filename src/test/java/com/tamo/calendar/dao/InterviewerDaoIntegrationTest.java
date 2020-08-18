@@ -1,10 +1,7 @@
 package com.tamo.calendar.dao;
 
-import com.tamo.calendar.exceptions.CandidateNotFoundException;
 import com.tamo.calendar.exceptions.InterviewerNotFoundException;
-import com.tamo.calendar.model.client.Candidate;
-import com.tamo.calendar.model.client.Interviewer;
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.model.user.Interviewer;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +53,7 @@ public class InterviewerDaoIntegrationTest {
         Interviewer interviewer = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewer);
         Long wrongId = interviewer.getId() + 1L;
+
         interviewerDao.getInterviewerById(wrongId.toString());
     }
 }

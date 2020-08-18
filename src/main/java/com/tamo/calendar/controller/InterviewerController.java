@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.tamo.calendar.dao.InterviewerDao;
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.model.user.Interviewer;
 import javax.validation.Valid;
 
 @RestController

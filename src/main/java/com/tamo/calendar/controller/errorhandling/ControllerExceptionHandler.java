@@ -1,7 +1,7 @@
 package com.tamo.calendar.controller.errorhandling;
 
 import com.tamo.calendar.exceptions.CandidateNotFoundException;
-import com.tamo.calendar.exceptions.ClientNotFoundException;
+import com.tamo.calendar.exceptions.UserNotFoundException;
 import com.tamo.calendar.exceptions.DateNotValidException;
 import com.tamo.calendar.exceptions.InterviewerNotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({
             CandidateNotFoundException.class,
             InterviewerNotFoundException.class,
-            ClientNotFoundException.class
+            UserNotFoundException.class
     })
     public ResponseEntity<ApiError> handleContentNotFound(Exception ex) {
         ApiError apiError = new ApiError(

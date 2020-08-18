@@ -1,9 +1,9 @@
 package com.tamo.calendar.utils;
 
-import com.tamo.calendar.model.interview.Duration;
+import com.tamo.calendar.model.interview.Interview;
 
 import java.util.List;
 
 public interface InterviewInterval {
-    List<Duration> calculateInterviews(List<Duration> client1, List<Duration> client2);
+    List<Interview> calculateInterviews(List<Interview> user1, List<Interview> user2);
 }

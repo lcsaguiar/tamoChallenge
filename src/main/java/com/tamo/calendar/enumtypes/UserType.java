@@ -1,6 +1,6 @@
 package com.tamo.calendar.enumtypes;
 
-public class ClientType {
+public class UserType {
    public static final String INTERVIEWER = "interviewer";
    public static final String CANDIDATE = "candidate";
 }

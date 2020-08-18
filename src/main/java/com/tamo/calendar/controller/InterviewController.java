@@ -2,8 +2,8 @@ package com.tamo.calendar.controller;
 
 import com.tamo.calendar.dao.CandidateDao;
 import com.tamo.calendar.dao.InterviewerDao;
-import com.tamo.calendar.model.client.Client;
-import com.tamo.calendar.model.interview.Duration;
+import com.tamo.calendar.model.user.User;
+import com.tamo.calendar.model.interview.Interview;
 import com.tamo.calendar.utils.InterviewHourInterval;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,15 +32,20 @@ public class InterviewController {
             @ApiResponse(code = 404, message = "Candidate and/or Interviewer/s do not exist"),
     })
     @GetMapping("/{candidateId}")
-    public List<Duration> getInterview(@PathVariable String candidateId, @RequestParam(name="interviewerId") List<String> interIds) {
-        Client candidate = candidateDao.getCandidateById(candidateId);
-        Client interviewer = interviewerDao.getInterviewerById(interIds.get(0));
-        List<Duration> duration = interviewHourInterval.calculateInterviews(candidate.returnDatesList(), interviewer.returnDatesList());
+    public List<Interview> getInterview(
+            @PathVariable String candidateId,
+            @RequestParam(name="interviewerId") List<String> interIds)
+    {
+        User candidate = candidateDao.getCandidateById(candidateId);
+        User interviewer = interviewerDao.getInterviewerById(interIds.get(0));
+        List<Interview> interview = interviewHourInterval.calculateInterviews(
+                candidate.returnDatesList(),
+                interviewer.returnDatesList());
         for (int i = 1; i < interIds.size(); i++) {
             interviewer = interviewerDao.getInterviewerById(interIds.get(i));
-            duration = interviewHourInterval.calculateInterviews(duration, interviewer.returnDatesList());
+            interview = interviewHourInterval.calculateInterviews(interview, interviewer.returnDatesList());
         }
 
-        return duration;
+        return interview;
     }
 }

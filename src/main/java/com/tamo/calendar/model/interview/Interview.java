@@ -3,11 +3,11 @@ package com.tamo.calendar.model.interview;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Duration {
+public class Interview {
     private LocalDateTime start;
     private LocalDateTime end;
 
-    public Duration(LocalDateTime start, LocalDateTime end) {
+    public Interview(LocalDateTime start, LocalDateTime end) {
         this.start = start;
         this.end = end;
     }
@@ -31,9 +31,9 @@ public class Duration {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Duration)) return false;
-        Duration duration = (Duration) o;
-        return Objects.equals(start, duration.start) &&
-                Objects.equals(end, duration.end);
+        if (!(o instanceof Interview)) return false;
+        Interview interview = (Interview) o;
+        return Objects.equals(start, interview.start) &&
+                Objects.equals(end, interview.end);
     }
 }

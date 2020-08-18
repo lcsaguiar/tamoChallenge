@@ -1,9 +1,8 @@
 package com.tamo.calendar.controller;
 
-import com.tamo.calendar.controller.AvailabilityController;
 import com.tamo.calendar.dao.AvailabilityDao;
-import com.tamo.calendar.dao.ClientDao;
-import com.tamo.calendar.model.client.Client;
+import com.tamo.calendar.dao.UserDao;
+import com.tamo.calendar.model.user.User;
 import com.tamo.calendar.model.interview.Availability;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -39,18 +38,16 @@ public class AvailabilityControllerTest {
     private AvailabilityDao availabilityDao;
 
     @MockBean
-    private ClientDao clientDao;
+    private UserDao userDao;
 
     @Test
     public void getAvailabilitiesList() throws Exception {
         LocalDateTime time = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        Availability availability = new Availability(time, time, new Client());
-        System.out.println(time);
+        Availability availability = new Availability(time, time, new User());
         List<Availability> availabilities = List.of(availability);
         given(availabilityDao.getAvailabilityList()).willReturn(availabilities);
 
-        mockMvc.perform(get("/availabilities/clients").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
+        mockMvc.perform(get("/availabilities/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
 
@@ -61,18 +58,17 @@ public class AvailabilityControllerTest {
     public void saveAvailability() throws Exception {
         String dateString = "2020-09-16T08";
         JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("start_duration", dateString);
-        jsonRequest.put("end_duration", dateString);
+        jsonRequest.put("start", dateString);
+        jsonRequest.put("end", dateString);
         String id = "1";
 
-        mockMvc.perform(post("/availabilities/clients/" + id)
+        mockMvc.perform(post("/availabilities/users/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest.toString()))
-                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.start_duration").value(dateString))
-                .andExpect(jsonPath("$.end_duration").value(dateString));
+                .andExpect(jsonPath("$.start").value(dateString))
+                .andExpect(jsonPath("$.end").value(dateString));
 
-        verify(clientDao).getClientById(id);
+        verify(userDao).getUserById(id);
     }
 }

@@ -1,8 +1,8 @@
-package com.tamo.calendar.model.client;
+package com.tamo.calendar.model.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tamo.calendar.model.interview.Availability;
-import com.tamo.calendar.model.interview.Duration;
+import com.tamo.calendar.model.interview.Interview;
 import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,8 +15,9 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="client_type")
-public class Client {
+@DiscriminatorColumn(name="user_type")
+@Table(name = "users")
+public class User {
 
     @ApiModelProperty(hidden = true)
     @Id
@@ -34,18 +35,18 @@ public class Client {
     private String email;
 
     @ApiModelProperty(hidden = true)
-    @OneToMany(mappedBy="client", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
     @Null
     private List<Availability> availabilities;
 
-    public Client() {
+    public User() {
     }
-    public Client(@NotEmpty(message = "Name cannot be empty") String name, @NotNull(message = "Must specify an email") @Email(message = "Email must be valid") String email) {
+    public User(@NotEmpty(message = "Name cannot be empty") String name, @NotNull(message = "Must specify an email") @Email(message = "Email must be valid") String email) {
         this.name = name;
         this.email = email;
     }
 
-    public Client(Long id, @NotEmpty(message = "Name cannot be empty") String name, @NotNull(message = "Must specify an email") @Email(message = "Email must be valid") String email, List<Availability> availabilities) {
+    public User(Long id, @NotEmpty(message = "Name cannot be empty") String name, @NotNull(message = "Must specify an email") @Email(message = "Email must be valid") String email, List<Availability> availabilities) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -65,10 +66,10 @@ public class Client {
         return availabilities;
     }
 
-    public List<Duration> returnDatesList() {
-        List<Duration> datesList = new LinkedList<>();
+    public List<Interview> returnDatesList() {
+        List<Interview> datesList = new LinkedList<>();
         for(Availability a: availabilities) {
-            datesList.add(new Duration(a.getStart_duration(), a.getEnd_duration()));
+            datesList.add(new Interview(a.getStart(), a.getEnd()));
         }
         return datesList;
     }
@@ -91,11 +92,11 @@ public class Client {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Client)) return false;
-        Client client = (Client) o;
-        return Objects.equals(id, client.id) &&
-                Objects.equals(name, client.name) &&
-                Objects.equals(email, client.email);
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email);
     }
 
     @Override

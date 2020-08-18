@@ -1,7 +1,9 @@
 package com.tamo.calendar.dao;
 
-import com.tamo.calendar.model.client.Client;
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.exceptions.InterviewerNotFoundException;
+import com.tamo.calendar.exceptions.UserNotFoundException;
+import com.tamo.calendar.model.user.User;
+import com.tamo.calendar.model.user.Interviewer;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,9 +21,9 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-public class ClientDaoIntegrationTest {
+public class UserDaoIntegrationTest {
     @Autowired
-    private ClientDao clientDao;
+    private UserDao userDao;
 
     @Autowired
     private InterviewerDao interviewerDao;
@@ -30,12 +32,21 @@ public class ClientDaoIntegrationTest {
     public static PostgreSQLContainer postgreSQLContainer = PostgresSqlContainer.getInstance();
 
     @Test
-    public void saveClientAndGetById() {
+    public void saveUserAndGetById() {
         Interviewer interviewerTest = new Interviewer("test", "test@test.com");
         interviewerDao.saveInterviewer(interviewerTest);
 
-        Client expected = clientDao.getClientById(interviewerTest.getId().toString());
+        User expected = userDao.getUserById(interviewerTest.getId().toString());
 
-        assertEquals("The client is not the expected", expected, interviewerTest);
+        assertEquals("The user is not the expected", expected, interviewerTest);
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void saveUserGetByDifferentId() {
+        Interviewer interviewer = new Interviewer("test", "test@test.com");
+        interviewerDao.saveInterviewer(interviewer);
+        Long wrongId = interviewer.getId() + 1L;
+
+        userDao.getUserById(wrongId.toString());
     }
 }

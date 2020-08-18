@@ -1,8 +1,7 @@
 package com.tamo.calendar.controller;
 
-import com.tamo.calendar.controller.CandidateController;
 import com.tamo.calendar.dao.CandidateDao;
-import com.tamo.calendar.model.client.Candidate;
+import com.tamo.calendar.model.user.Candidate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,6 @@ public class CandidateControllerTest {
         given(candidateDao.getCandidatesList()).willReturn(candidates);
 
         mockMvc.perform(get("/candidates").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].name").value(candidate.getName()))
@@ -59,6 +57,7 @@ public class CandidateControllerTest {
                 candidate
         );
         mockMvc.perform(get("/candidates/1"));
+
         verify(candidateDao).getCandidateById("1");
     }
 
@@ -73,7 +72,6 @@ public class CandidateControllerTest {
         mockMvc.perform(post("/candidates")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("test"))
                 .andExpect(jsonPath("$.email").value("test@email.com"));
@@ -88,7 +86,6 @@ public class CandidateControllerTest {
         String requestJson = ow.writeValueAsString(candidate);
 
         mockMvc.perform(post("/candidates").contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").value("name: Name cannot be empty"));
     }
@@ -102,7 +99,6 @@ public class CandidateControllerTest {
         String requestJson = ow.writeValueAsString(candidate );
 
         mockMvc.perform(post("/candidates").contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").value("email: Email must be valid"));
     }

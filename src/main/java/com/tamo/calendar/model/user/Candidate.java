@@ -1,14 +1,14 @@
-package com.tamo.calendar.model.client;
+package com.tamo.calendar.model.user;
 
-import com.tamo.calendar.enumtypes.ClientType;
+import com.tamo.calendar.enumtypes.UserType;
 import com.tamo.calendar.model.interview.Availability;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue(ClientType.CANDIDATE)
-public class Candidate extends Client {
+@DiscriminatorValue(UserType.CANDIDATE)
+public class Candidate extends User {
     public Candidate() {
         super();
     }

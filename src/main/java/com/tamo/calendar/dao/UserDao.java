@@ -1,9 +1,7 @@
 package com.tamo.calendar.dao;
 
-import com.tamo.calendar.exceptions.CandidateNotFoundException;
-import com.tamo.calendar.exceptions.ClientNotFoundException;
-import com.tamo.calendar.model.client.Candidate;
-import com.tamo.calendar.model.client.Client;
+import com.tamo.calendar.exceptions.UserNotFoundException;
+import com.tamo.calendar.model.user.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,21 +12,21 @@ import javax.persistence.criteria.Root;
 
 @Repository
 @Transactional
-public class ClientDao extends Dao {
+public class UserDao extends Dao {
 
-    public Client getClientById(String id) {
+    public User getUserById(String id) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<Client> cq = builder.createQuery(Client.class);
-        Root<Client> root = cq.from(Client.class);
+        CriteriaQuery<User> cq = builder.createQuery(User.class);
+        Root<User> root = cq.from(User.class);
         cq.select(root).where(builder.equal(root.get("id"), id));
 
-        TypedQuery<Client> query = getSession().createQuery(cq);
+        TypedQuery<User> query = getSession().createQuery(cq);
 
         try {
             return query.getSingleResult();
         }
         catch (Exception ex) {
-            throw new ClientNotFoundException("Client with id " + id + " not found");
+            throw new UserNotFoundException("User with id " + id + " not found");
         }
     }
 }

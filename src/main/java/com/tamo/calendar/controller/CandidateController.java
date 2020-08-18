@@ -1,8 +1,8 @@
 package com.tamo.calendar.controller;
 
 import com.tamo.calendar.dao.CandidateDao;
-import com.tamo.calendar.model.client.Candidate;
-import com.tamo.calendar.model.client.Client;
+import com.tamo.calendar.model.user.Candidate;
+import com.tamo.calendar.model.user.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -43,7 +43,7 @@ public class CandidateController {
             @ApiResponse(code = 404, message = "Candidate provided does not exist"),
     })
     @GetMapping("/{id}")
-    public Client getCandidate(@PathVariable String id) {
+    public User getCandidate(@PathVariable String id) {
         return dao.getCandidateById(id);
     }
 }

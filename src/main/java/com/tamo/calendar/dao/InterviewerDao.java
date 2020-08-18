@@ -3,7 +3,7 @@ package com.tamo.calendar.dao;
 import com.tamo.calendar.exceptions.InterviewerNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.model.user.Interviewer;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

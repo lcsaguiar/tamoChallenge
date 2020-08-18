@@ -1,6 +1,6 @@
 package com.tamo.calendar.dao;
 
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.model.user.Interviewer;
 import com.tamo.calendar.model.interview.Availability;
 import org.junit.ClassRule;
 import org.junit.Test;

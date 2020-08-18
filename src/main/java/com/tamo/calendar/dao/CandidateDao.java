@@ -1,7 +1,7 @@
 package com.tamo.calendar.dao;
 
 import com.tamo.calendar.exceptions.CandidateNotFoundException;
-import com.tamo.calendar.model.client.Candidate;
+import com.tamo.calendar.model.user.Candidate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.TypedQuery;

@@ -2,10 +2,10 @@ package com.tamo.calendar.controller;
 
 import com.tamo.calendar.dao.CandidateDao;
 import com.tamo.calendar.dao.InterviewerDao;
-import com.tamo.calendar.model.client.Candidate;
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.model.user.Candidate;
+import com.tamo.calendar.model.user.Interviewer;
 import com.tamo.calendar.model.interview.Availability;
-import com.tamo.calendar.model.interview.Duration;
+import com.tamo.calendar.model.interview.Interview;
 import com.tamo.calendar.utils.InterviewHourInterval;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class InterviewControllerTest {
 
         given(candidateDao.getCandidateById(candidate.getId().toString())).willReturn(candidate);
         given(interviewerDao.getInterviewerById(interviewer.getId().toString())).willReturn(interviewer);
-        given(interviewHourInterval.calculateInterviews(any(), any())).willReturn(List.of( new Duration(LocalDateTime.now(), LocalDateTime.now())));
+        given(interviewHourInterval.calculateInterviews(any(), any())).willReturn(List.of( new Interview(LocalDateTime.now(), LocalDateTime.now())));
 
 
     }

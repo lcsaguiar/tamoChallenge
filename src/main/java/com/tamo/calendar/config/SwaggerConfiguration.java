@@ -1,7 +1,7 @@
 package com.tamo.calendar.config;
 
-import com.tamo.calendar.model.client.Client;
-import com.tamo.calendar.model.interview.Duration;
+import com.tamo.calendar.model.user.User;
+import com.tamo.calendar.model.interview.Interview;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -21,7 +21,7 @@ public class SwaggerConfiguration {
                 .apis(RequestHandlerSelectors.basePackage("com.tamo.calendar"))
                 .build()
                 .apiInfo(apiInfo())
-                .ignoredParameterTypes(Client.class, Duration.class)
+                .ignoredParameterTypes(User.class, Interview.class)
                 .useDefaultResponseMessages(false);
     }
 

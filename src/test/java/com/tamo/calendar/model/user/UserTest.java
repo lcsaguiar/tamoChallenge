@@ -1,24 +1,21 @@
-package com.tamo.calendar.model.client;
+package com.tamo.calendar.model.user;
 
 import com.tamo.calendar.model.interview.Availability;
-import com.tamo.calendar.model.interview.Duration;
-import org.junit.Assert;
+import com.tamo.calendar.model.interview.Interview;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.data.util.Pair;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ClientTest {
-    private Client client;
+public class UserTest {
+    private User user;
 
     @Before
     public void setUp() {
-        client = new Client();
+        user = new User();
     }
 
     @Test
@@ -26,13 +23,13 @@ public class ClientTest {
         Availability availability = new Availability();
         LocalDateTime start = LocalDateTime.now().plusHours(1);
         LocalDateTime end = LocalDateTime.now().plusHours(1);
-        availability.setStart_duration(start);
-        availability.setEnd_duration(end);
-        client.setAvailabilities(List.of(availability));
+        availability.setStart(start);
+        availability.setEnd(end);
+        user.setAvailabilities(List.of(availability));
 
-        List<Duration> datesList =  client.returnDatesList();
+        List<Interview> datesList =  user.returnDatesList();
 
-        List<Duration> expected = List.of(new Duration(start, end));
+        List<Interview> expected = List.of(new Interview(start, end));
 
         assertEquals("The array length is not what was expected!", 1, datesList.size());
         assertEquals("The result is not the expected", datesList.get(0), expected.get(0));

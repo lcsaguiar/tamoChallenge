@@ -1,7 +1,7 @@
 package com.tamo.calendar.controller;
 
 import com.tamo.calendar.dao.InterviewerDao;
-import com.tamo.calendar.model.client.Interviewer;
+import com.tamo.calendar.model.user.Interviewer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

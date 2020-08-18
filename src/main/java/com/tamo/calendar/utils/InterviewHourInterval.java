@@ -1,6 +1,6 @@
 package com.tamo.calendar.utils;
 
-import com.tamo.calendar.model.interview.Duration;
+import com.tamo.calendar.model.interview.Interview;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -15,30 +15,30 @@ public class InterviewHourInterval implements InterviewInterval {
     private boolean overlapDates(LocalDateTime startA, LocalDateTime endA, LocalDateTime startB, LocalDateTime endB) {
         return !startA.isAfter(endB) && !endA.minusHours(1).isBefore(startB);
     }
-    public List<Duration> calculateInterviews(List<Duration> client1, List<Duration> client2) {
-        // remove past durations
-        client1.removeIf(duration -> (duration.getEnd().minusHours(HOURS).isBefore(LocalDateTime.now())));
-        client2.removeIf(duration -> (duration.getEnd().minusHours(HOURS).isBefore(LocalDateTime.now())));
+    public List<Interview> calculateInterviews(List<Interview> user1, List<Interview> user2) {
+        // remove past dates
+        user1.removeIf(interview -> (interview.getEnd().minusHours(HOURS).isBefore(LocalDateTime.now())));
+        user2.removeIf(interview -> (interview.getEnd().minusHours(HOURS).isBefore(LocalDateTime.now())));
 
-        return calculateInterviewsAux(client1, client2);
+        return calculateInterviewsAux(user1, user2);
     }
 
-    private List<Duration> calculateInterviewsAux(List<Duration> client1, List<Duration> client2) {
-        List<Duration> interviews = new LinkedList<>();
-        for(Duration duration1: client1) {
-            for(Duration duration2: client2) {
-                if(overlapDates(duration1.getStart(), duration1.getEnd(), duration2.getStart(), duration2.getEnd())) {
-                    LocalDateTime start = duration1.getStart().isAfter(duration2.getStart()) ?
-                            duration1.getStart() :
-                            duration2.getStart();
+    private List<Interview> calculateInterviewsAux(List<Interview> user1, List<Interview> user2) {
+        List<Interview> interviews = new LinkedList<>();
+        for(Interview interview1 : user1) {
+            for(Interview interview2 : user2) {
+                if(overlapDates(interview1.getStart(), interview1.getEnd(), interview2.getStart(), interview2.getEnd())) {
+                    LocalDateTime start = interview1.getStart().isAfter(interview2.getStart()) ?
+                            interview1.getStart() :
+                            interview2.getStart();
 
-                    // start duration must be after than now
+                    // start interview must be after than now
                     LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
                     start = start.isBefore(now) ? now : start;
 
-                    LocalDateTime end = duration1.getEnd().isBefore(duration2.getEnd()) ?
-                            duration1.getEnd() :
-                            duration2.getEnd();
+                    LocalDateTime end = interview1.getEnd().isBefore(interview2.getEnd()) ?
+                            interview1.getEnd() :
+                            interview2.getEnd();
 
                     addInterviews(interviews, start, end);
                 }
@@ -47,10 +47,10 @@ public class InterviewHourInterval implements InterviewInterval {
         return interviews;
     }
 
-    private void addInterviews(List<Duration> interviews, LocalDateTime start, LocalDateTime end) {
+    private void addInterviews(List<Interview> interviews, LocalDateTime start, LocalDateTime end) {
         LocalDateTime endInterval = start.plusHours(HOURS);
         while(!endInterval.isAfter(end)) {
-            interviews.add(new Duration(start, endInterval));
+            interviews.add(new Interview(start, endInterval));
             start = endInterval;
             endInterval = endInterval.plusHours(1);
         }
