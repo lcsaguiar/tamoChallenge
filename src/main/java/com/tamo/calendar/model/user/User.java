@@ -36,7 +36,6 @@ public class User {
 
     @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
-    @Null
     private List<Availability> availabilities;
 
     public User() {
@@ -68,6 +67,9 @@ public class User {
 
     public List<Interview> returnDatesList() {
         List<Interview> datesList = new LinkedList<>();
+        if(availabilities == null) {
+            return datesList;
+        }
         for(Availability a: availabilities) {
             datesList.add(new Interview(a.getStart(), a.getEnd()));
         }

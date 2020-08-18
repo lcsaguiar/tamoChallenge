@@ -4,7 +4,7 @@ import com.tamo.calendar.dao.CandidateDao;
 import com.tamo.calendar.dao.InterviewerDao;
 import com.tamo.calendar.model.user.User;
 import com.tamo.calendar.model.interview.Interview;
-import com.tamo.calendar.utils.InterviewHourInterval;
+import com.tamo.calendar.utils.InterviewOneHourDuration;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,7 +24,7 @@ public class InterviewController {
     private InterviewerDao interviewerDao;
 
     @Autowired
-    private InterviewHourInterval interviewHourInterval;
+    private InterviewOneHourDuration interviewOneHourDuration;
 
     @ApiOperation(value = "Get all possible interviews for the provided candidate and interviewers")
     @ApiResponses(value = {
@@ -38,12 +38,12 @@ public class InterviewController {
     {
         User candidate = candidateDao.getCandidateById(candidateId);
         User interviewer = interviewerDao.getInterviewerById(interIds.get(0));
-        List<Interview> interview = interviewHourInterval.calculateInterviews(
+        List<Interview> interview = interviewOneHourDuration.calculateInterviews(
                 candidate.returnDatesList(),
                 interviewer.returnDatesList());
-        for (int i = 1; i < interIds.size(); i++) {
-            interviewer = interviewerDao.getInterviewerById(interIds.get(i));
-            interview = interviewHourInterval.calculateInterviews(interview, interviewer.returnDatesList());
+        for (int index = 1; index < interIds.size(); index++) {
+            interviewer = interviewerDao.getInterviewerById(interIds.get(index));
+            interview = interviewOneHourDuration.calculateInterviews(interview, interviewer.returnDatesList());
         }
 
         return interview;

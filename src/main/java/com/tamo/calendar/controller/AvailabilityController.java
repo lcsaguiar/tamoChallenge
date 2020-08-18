@@ -45,6 +45,7 @@ public class AvailabilityController {
             throw new DateNotValidException("Start date must be before than the end date");
         }
         dao.saveAvailability(availability);
+
         return availability;
     }
 }

@@ -6,7 +6,7 @@ import com.tamo.calendar.model.user.Candidate;
 import com.tamo.calendar.model.user.Interviewer;
 import com.tamo.calendar.model.interview.Availability;
 import com.tamo.calendar.model.interview.Interview;
-import com.tamo.calendar.utils.InterviewHourInterval;
+import com.tamo.calendar.utils.InterviewOneHourDuration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,7 +23,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -44,7 +42,7 @@ public class InterviewControllerTest {
     private InterviewerDao interviewerDao;
 
     @MockBean
-    private InterviewHourInterval interviewHourInterval;
+    private InterviewOneHourDuration interviewOneHourDuration;
 
     @Before
     public void setUp() {
@@ -54,31 +52,26 @@ public class InterviewControllerTest {
 
         given(candidateDao.getCandidateById(candidate.getId().toString())).willReturn(candidate);
         given(interviewerDao.getInterviewerById(interviewer.getId().toString())).willReturn(interviewer);
-        given(interviewHourInterval.calculateInterviews(any(), any())).willReturn(List.of( new Interview(LocalDateTime.now(), LocalDateTime.now())));
+        given(interviewOneHourDuration.calculateInterviews(any(), any())).willReturn(List.of( new Interview(LocalDateTime.now(), LocalDateTime.now())));
 
 
     }
+
     @Test
     public void getInterviewWithOneInterviewer() throws Exception {
-
         mockMvc.perform(get("/interview/" + candidate.getId().toString() + "?interviewerId=" + interviewer.getId().toString()))
-                .andDo(print())
                 .andExpect(status().isOk());
-
         verify(candidateDao, times(1)).getCandidateById(candidate.getId().toString());
         verify(interviewerDao, times(1)).getInterviewerById(interviewer.getId().toString());
-        verify(interviewHourInterval, times(1)).calculateInterviews(any(), any());
+        verify(interviewOneHourDuration, times(1)).calculateInterviews(any(), any());
     }
 
     @Test
     public void getInterviewWithMultipleInterviewers() throws Exception {
-
         mockMvc.perform(get("/interview/" + candidate.getId().toString() + "?interviewerId=" + interviewer.getId().toString() + "&interviewerId=" + interviewer.getId().toString()))
-                .andDo(print())
                 .andExpect(status().isOk());
-
         verify(candidateDao, times(1)).getCandidateById(candidate.getId().toString());
         verify(interviewerDao, times(2)).getInterviewerById(interviewer.getId().toString());
-        verify(interviewHourInterval, times(2)).calculateInterviews(any(), any());
+        verify(interviewOneHourDuration, times(2)).calculateInterviews(any(), any());
     }
 }

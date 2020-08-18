@@ -19,7 +19,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,12 +34,10 @@ public class InterviewerControllerTest {
     @Test
     public void getInterviewers() throws Exception {
         Interviewer interviewer = new Interviewer("test", "test@test.com");
-
         List<Interviewer> interviewers = List.of(interviewer);
-        given(interviewerDao.getInterviewersList()).willReturn(interviewers);
 
+        given(interviewerDao.getInterviewersList()).willReturn(interviewers);
         mockMvc.perform(get("/interviewers").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].name").value(interviewer.getName()))
@@ -56,20 +53,16 @@ public class InterviewerControllerTest {
         given(interviewerDao.getInterviewerById("1")).willReturn(
                 interviewer
         );
-
         mockMvc.perform(get("/interviewers/1"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("test"))
                 .andExpect(jsonPath("$.email").value("test@email.com"));
-
         verify(interviewerDao).getInterviewerById("1");
     }
 
     @Test
-    public void returns200WhenInterviewerIsValid() throws Exception {
+    public void postValidInterviewer() throws Exception {
         Interviewer interviewer = new Interviewer("test", "test@email.com");
-
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(interviewer);
@@ -77,51 +70,43 @@ public class InterviewerControllerTest {
         mockMvc.perform(post("/interviewers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("test"))
                 .andExpect(jsonPath("$.email").value("test@email.com"));
     }
 
     @Test
-    public void returns400WhenNameEmpty() throws Exception {
+    public void postInterviewerWithEmptyName() throws Exception {
         Interviewer interviewer = new Interviewer("", "test@test.com");
-
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(interviewer);
 
         mockMvc.perform(post("/interviewers").contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").value("name: Name cannot be empty"));
     }
 
     @Test
-    public void returns400WhenEmailNotValid() throws Exception {
+    public void postInterviewerWithInValidEmail() throws Exception {
         Interviewer interviewer = new Interviewer("test", "test");
-
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(interviewer );
 
         mockMvc.perform(post("/interviewers").contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").value("email: Email must be valid"));
     }
 
     @Test
-    public void returns400WhenEmailNull() throws Exception {
-        Interviewer interviewer = new Interviewer();
-        interviewer.setName("test");
-
+    public void postInterviewerWithNullEmail() throws Exception {
+        Interviewer interviewer = new Interviewer("test", null);
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(interviewer );
 
         mockMvc.perform(post("/interviewers").contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").value("email: Must specify an email"));
     }

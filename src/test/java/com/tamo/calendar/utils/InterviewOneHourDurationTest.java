@@ -10,14 +10,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class InterviewHourIntervalTest {
+public class InterviewOneHourDurationTest {
     private List<Interview> list1;
     private List<Interview> list2;
-    private InterviewHourInterval interviewHourInterval;
+    private InterviewOneHourDuration interviewOneHourDuration;
 
     @Before
     public void setUp() {
-        interviewHourInterval = new InterviewHourInterval();
+        interviewOneHourDuration = new InterviewOneHourDuration();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class InterviewHourIntervalTest {
         list1 = new LinkedList<>(List.of(new Interview(start, end)));
         list2 = new LinkedList<>(List.of(new Interview(start, end)));
 
-        List<Interview> interviews = interviewHourInterval.calculateInterviews(list1, list2);
+        List<Interview> interviews = interviewOneHourDuration.calculateInterviews(list1, list2);
         List<Interview> expected = new LinkedList<>(List.of(
                 new Interview(start, end)));
 
@@ -42,7 +42,7 @@ public class InterviewHourIntervalTest {
         list1 = new LinkedList<>(List.of(new Interview(start, end)));
         list2 = new LinkedList<>(List.of(new Interview(start, end)));
 
-        List<Interview> interviews =  interviewHourInterval.calculateInterviews(list1, list2);
+        List<Interview> interviews =  interviewOneHourDuration.calculateInterviews(list1, list2);
         List<Interview> expected = new LinkedList<>(List.of(
                 new Interview(start, start.plusHours(1)),
                 new Interview(start.plusHours(1), end)));
@@ -61,7 +61,7 @@ public class InterviewHourIntervalTest {
         list1 = new LinkedList<>(List.of(new Interview(start1, end1)));
         list2 = new LinkedList<>(List.of(new Interview(start2, end2)));
 
-        List<Interview> interviews = interviewHourInterval.calculateInterviews(list1, list2);
+        List<Interview> interviews = interviewOneHourDuration.calculateInterviews(list1, list2);
 
         assertEquals("The array length is not what was expected!", 0, interviews.size());
     }
@@ -73,7 +73,7 @@ public class InterviewHourIntervalTest {
         list1 = new LinkedList<>(List.of(new Interview(start, end)));
         list2 = new LinkedList<>(List.of(new Interview(start, end)));
 
-        List<Interview> interviews = interviewHourInterval.calculateInterviews(list1, list2);
+        List<Interview> interviews = interviewOneHourDuration.calculateInterviews(list1, list2);
 
         assertEquals("The array length is not what was expected!", 0, interviews.size());
     }
@@ -85,7 +85,7 @@ public class InterviewHourIntervalTest {
         list1 = new LinkedList<>(List.of(new Interview(start, end)));
         list2 = new LinkedList<>(List.of(new Interview(start, end)));
 
-        List<Interview> interviews = interviewHourInterval.calculateInterviews(list1, list2);
+        List<Interview> interviews = interviewOneHourDuration.calculateInterviews(list1, list2);
 
         List<Interview> expected = new LinkedList<>(List.of(
                 new Interview(start.plusHours(1), start.plusHours(2)),
@@ -94,5 +94,17 @@ public class InterviewHourIntervalTest {
         assertEquals("The array length is not what was expected!", 2, interviews.size());
         assertEquals("The result is not the expected",expected.get(0), interviews.get(0));
         assertEquals("The result is not the expected", expected.get(1), interviews.get(1));
+    }
+
+    @Test
+    public void overlapInterviewWithMinutes() {
+        LocalDateTime start = LocalDateTime.now().plusMinutes(30);
+        LocalDateTime end = start.plusHours(1).plusMinutes(30);
+        list1 = new LinkedList<>(List.of(new Interview(start, end)));
+        list2 = new LinkedList<>(List.of(new Interview(start, end)));
+
+        List<Interview> interviews = interviewOneHourDuration.calculateInterviews(list1, list2);
+
+        assertEquals("The array length is not what was expected!", 0, interviews.size());
     }
 }

@@ -14,21 +14,21 @@ import java.util.Objects;
 @Table(name = "availabilities")
 public class Availability {
     @Transient
-    private final String format = "uuuu-MM-dd'T'HH";
+    private final String format = "uuuu-MM-dd'T'HH:mm";
 
     @Id
     @GeneratedValue
     @ApiModelProperty(hidden = true)
     private Long id;
 
-    @ApiModelProperty(required = true, example = "2021-12-31T01")
+    @ApiModelProperty(required = true, example = "2021-12-31T01:00")
     @NotNull
     @FutureOrPresent
     @JsonFormat(pattern = format)
     @Column(name="start_availability")
     private LocalDateTime start;
 
-    @ApiModelProperty(required = true, example = "2021-12-31T10")
+    @ApiModelProperty(required = true, example = "2021-12-31T10:00")
     @NotNull
     @FutureOrPresent
     @JsonFormat(pattern = format)
