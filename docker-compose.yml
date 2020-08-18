@@ -1,7 +1,11 @@
 version: '3'
 services:
   application:
-    build: .
+    image: maven
+    working_dir: /usr/src/app
+    volumes:
+    - ./:/usr/src/app
+    entrypoint: ["mvn", "exec:java"]
     ports:
       - "8080:8080"
     depends_on:
