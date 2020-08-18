@@ -2,12 +2,14 @@ package com.tamo.calendar.dao;
 
 import com.tamo.calendar.exceptions.CandidateNotFoundException;
 import com.tamo.calendar.model.client.Candidate;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -22,6 +24,9 @@ import static org.junit.Assert.assertEquals;
 public class CandidateDaoIntegrationTest {
     @Autowired
     private CandidateDao candidateDao;
+
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainer = PostgresSqlContainer.getInstance();
 
     @Test
     public void saveCandidateAndGetList() {
